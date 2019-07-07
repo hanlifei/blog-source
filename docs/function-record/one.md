@@ -1,15 +1,8 @@
 ---
-title: Spring Boot项目中获取类or接口的所有实现
-date: 2019-02-14 19:54:02
-categories: 功能实现
-tags:
-  - java
-  - Spring Boot
+title: 111
 ---
 
 > 本文实现了在使用spring boot进行项目开发时, 开发环境和jar包环境下获取父类或者接口的所有子类
-
-<!-- more -->
 
 ## 前言
 java是没有提供直接的api获取某个类or接口的子类的, 所以需要自己进行实现
