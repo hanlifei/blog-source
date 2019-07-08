@@ -6,5 +6,5 @@ title: 导航
 
 **已摘:**
 
-[求你了，再问你Java内存模型的时候别再给我讲堆栈方法区了…](/summary/technology/JMM-Hollis-19.7.8.md)
+[求你了，再问你Java内存模型的时候别再给我讲堆栈方法区了…](/summary/JMM-Hollis-19.7.8.md)
 
