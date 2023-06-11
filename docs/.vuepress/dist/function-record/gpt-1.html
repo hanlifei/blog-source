@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%">
+<head>
+  <meta charset="utf-8">
+  <style>
+    .popup-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+    }
+
+    .popup-close {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      cursor: pointer;
+    }
+
+  #colorList {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+  }
+
+  #listItems {
+    list-style-type: none;
+    padding: 0;
+  }
+
+  #listItems li {
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .popup-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    display: none;
+    max-width: 500px;
+    width: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  .popup-content {
+    margin-bottom: 10px;
+  }
+
+  .popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    color: #555;
+    font-size: 18px;
+  }
+
+  .popup-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .popup-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+
+  .popup-body {
+    line-height: 1.4;
+  }
+
+  /* 鼠标经过的描述 */
+  .tooltip-container {
+    position: absolute;
+    display: none;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    max-width: 500px;
+    width: 100%;
+    font-family: Arial, sans-serif;
+  }
+
+  .tooltip-content ul {
+    padding-left: 20px;
+    margin-top: 10px;
+  }
+
+  .tooltip-content li {
+    margin-bottom: 5px;
+  }
+  </style>
+</head>
+<body style="height: 100%; margin: 0">
+  <div id="container" style="height: 100%"></div>
+  <!-- 颜色列表 -->
+  <div id="colorList" style="position: fixed; top: 20px; left: 20px;">
+    <ul id="listItems"></ul>
+  </div>
+  <!-- 弹窗相关 -->
+  <div id="popupContainer" class="popup-container">
+    <div class="popup-header">
+        <h2 class="popup-title" id="popupTitle"></h2>
+      <span class="popup-close" onclick="closePopup()">&times;</span>
+    </div>
+    <div class="popup-body" id="popupContent"></div>
+  </div>
+  <!-- 鼠标经过气泡的描述 -->
+  <div id="tooltipContainer" class="tooltip-container">
+    <div class="tooltip-content" id="tooltipContent"></div>
+  </div>
+  
+
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+  <!-- Uncomment this line if you want to dataTool extension -->
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
+ 
+  <!-- Uncomment this line if you want to use gl extension -->
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
+ 
+  <!-- Uncomment this line if you want to echarts-stat extension -->
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
+ 
+  <!-- Uncomment this line if you want to use map -->
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
+ 
+  <!-- Uncomment these two lines if you want to use bmap extension -->
+  <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=u5zwB2f7UWPNW3p5MdydA9nAeolKUxUN"></script>
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/bmap.min.js"></script>
+ 
+
+  <script type="text/javascript">
+     var colorList = document.getElementById('listItems');
+  var bubbleColors = [
+    { type: '西餐', color: 'red' },
+    { type: '日料', color: 'blue' },
+    { type: '中餐', color: 'yellow' }
+  ];
+
+  bubbleColors.forEach(function(item) {
+    var li = document.createElement('li');
+    li.textContent = item.type;
+    li.style.color = item.color;
+    colorList.appendChild(li);
+  });
+    var dom = document.getElementById('container');
+    var myChart = echarts.init(dom, null, {
+      renderer: 'canvas',
+      useDirtyRect: false
+    });
+    var app = {};
+    var ROOT_PATH = 'https://echarts.apache.org/examples';
+    var option;
+
+    // 生成随机位置的气泡数据
+    var bubbleData = [
+  {
+    name: '气泡1',
+    value: [116.4, 39.9, 10],
+    details: { type: '西餐', name: 'orio', address: '三元桥',title:'1' },
+    itemStyle: { color: 'red' }  // 修改气泡的颜色
+  },
+  {
+    name: '气泡2',
+    value: [116.5, 39.8, 20],
+    details: { type: '中餐', name: '麻辣烫', address: '朝阳区',title:'2'  },
+    itemStyle: { color: 'yellow' }  // 修改气泡的颜色
+  },
+  {
+    name: '气泡3',
+    value: [116.6, 39.7, 30],
+    details: { type: '日料', name: '寿司', address: '海淀区',title:'3'  },
+    itemStyle: { color: 'blue' }  // 修改气泡的颜色
+  }
+];
+
+    myChart.setOption(
+      (option = {
+        bmap: {
+          center: [116.46, 39.92],
+          zoom: 10,
+          roam: true,
+        },
+        // tooltip: {
+        //   trigger: 'item',
+        //   formatter: function (params) {
+        //     var details = params.data.details;
+        //     return details ? JSON.stringify(details) : '';
+        //   }
+        // },
+        series: [
+          {
+            type: 'lines',
+            coordinateSystem: 'bmap',
+            polyline: true,
+            silent: true,
+            lineStyle: {
+              color: 'rgb(200, 35, 45)',
+              opacity: 0.2,
+              width: 1
+            },
+            progressiveThreshold: 500,
+            progressive: 200
+          },
+          {
+            type: 'effectScatter',
+            coordinateSystem: 'bmap',
+            data: bubbleData,
+            symbolSize: function (val) {
+              return 20; // 气泡大小关联到第三个维度的值
+            },
+            showEffectOn: 'render',
+            rippleEffect: {
+              brushType: 'stroke'
+            },
+            hoverAnimation: true,
+            label: {
+              formatter: '{b}',
+              position: 'right',
+              show: true
+            },
+            itemStyle: {
+              color: 'purple'
+            },
+            emphasis: {
+              label: {
+                show: true
+              }
+            }
+          }
+        ]
+      })
+    );
+
+    if (option && typeof option === 'object') {
+      myChart.setOption(option);
+    }
+
+    // 弹窗相关
+    
+    myChart.on('click', function (params) {
+      var details = params.data.details;
+      if (details) {
+        showPopup(details);
+      }
+    });
+
+    window.addEventListener('resize', myChart.resize);
+
+    var popupContainer = document.getElementById('popupContainer');
+  var popupTitle = document.getElementById('popupTitle');
+  var popupContent = document.getElementById('popupContent');
+
+  function showPopup(details) {
+    popupTitle.innerText = details.title;
+    popupContent.innerHTML = `
+      <div>
+        <div>Type: ${details.type}</div>
+        <div>Name: ${details.name}</div>
+        <div>Address: ${details.address}</div>
+      </div>
+    `;
+    popupContainer.style.display = 'block';
+  }
+
+  function closePopup() {
+    popupContainer.style.display = 'none';
+  }
+
+
+
+
+  var tooltipContainer = document.getElementById('tooltipContainer');
+  var tooltipContent = document.getElementById('tooltipContent');
+
+  myChart.on('mouseover', function (params) {
+    var details = params.data.details;
+    if (details) {
+      showTooltip(params.event.event, details);
+    }
+  });
+
+  myChart.on('mouseout', function () {
+    hideTooltip();
+  });
+
+  function showTooltip(event, details) {
+    tooltipContent.innerHTML = '';
+    var content = document.createElement('ul');
+    content.innerHTML = `
+      <li>Type: ${details.type}</li>
+      <li>Name: ${details.name}</li>
+      <li>Address: ${details.address}</li>
+    `;
+    tooltipContent.appendChild(content);
+
+    tooltipContainer.style.left = event.offsetX + 'px';
+    tooltipContainer.style.top = event.offsetY + 'px';
+    tooltipContainer.style.display = 'block';
+  }
+
+  function hideTooltip() {
+    tooltipContainer.style.display = 'none';
+  }
+  </script>
+</body>
+</html>
