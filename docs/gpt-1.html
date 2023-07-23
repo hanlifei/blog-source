@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN" style="height: 100%">
+
 <head>
   <meta charset="utf-8">
+  <meta HTTP-EQUIV="pragma" CONTENT="no-cache">
+  <meta HTTP-EQUIV="Cache-Control" CONTENT="no-store, must-revalidate">
+  <meta HTTP-EQUIV="expires" CONTENT="Wed, 26 Feb 1997 08:21:57 GMT">
+  <meta HTTP-EQUIV="expires" CONTENT="0">
+
   <style>
     .popup-container {
       position: absolute;
@@ -22,99 +28,102 @@
       cursor: pointer;
     }
 
-  #colorList {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 5px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
-  }
+    #colorList {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+    }
 
-  #listItems {
-    list-style-type: none;
-    padding: 0;
-  }
+    #listItems {
+      list-style-type: none;
+      padding: 0;
+    }
 
-  #listItems li {
-    margin-bottom: 10px;
-    padding: 5px;
-    border-radius: 5px;
-    font-weight: bold;
-    color: #fff;
-  }
+    #listItems li {
+      margin-bottom: 10px;
+      padding: 5px;
+      border-radius: 5px;
+      font-weight: bold;
+      color: #fff;
+    }
 
-  .popup-container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
-    display: none;
-    max-width: 500px;
-    width: 100%;
-    font-family: Arial, sans-serif;
-  }
+    .popup-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      display: none;
+      /* max-width: 500px; */
+      /* width: 100%; */
+      font-family: Arial, sans-serif;
+      font-size: large;
+      font-weight: bold;
+    }
 
-  .popup-content {
-    margin-bottom: 10px;
-  }
+    .popup-content {
+      margin-bottom: 10px;
+    }
 
-  .popup-close {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    cursor: pointer;
-    color: #555;
-    font-size: 18px;
-  }
+    .popup-close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      cursor: pointer;
+      color: #555;
+      font-size: 50px;
+    }
 
-  .popup-header {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-  }
+    .popup-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-  .popup-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-left: 10px;
-  }
+    .popup-title {
+      font-size: 30px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
 
-  .popup-body {
-    line-height: 1.4;
-  }
+    .popup-body {
+      line-height: 1.4;
+    }
 
-  /* 鼠标经过的描述 */
-  .tooltip-container {
-    position: absolute;
-    display: none;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-    z-index: 9999;
-    max-width: 500px;
-    width: 100%;
-    font-family: Arial, sans-serif;
-  }
+    /* 鼠标经过的描述 */
+    .tooltip-container {
+      position: absolute;
+      display: none;
+      background-color: #fff;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 9999;
+      /* max-width: 500px; */
+      /* width: 100%; */
+      font-family: Arial, sans-serif;
+    }
 
-  .tooltip-content ul {
-    padding-left: 20px;
-    margin-top: 10px;
-  }
+    .tooltip-content ul {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
 
-  .tooltip-content li {
-    margin-bottom: 5px;
-  }
+    .tooltip-content li {
+      margin-bottom: 5px;
+    }
   </style>
 </head>
+
 <body style="height: 100%; margin: 0">
   <div id="container" style="height: 100%"></div>
   <!-- 颜色列表 -->
@@ -124,7 +133,7 @@
   <!-- 弹窗相关 -->
   <div id="popupContainer" class="popup-container">
     <div class="popup-header">
-        <h2 class="popup-title" id="popupTitle"></h2>
+      <p class="popup-title" id="popupTitle"></p>
       <span class="popup-close" onclick="closePopup()">&times;</span>
     </div>
     <div class="popup-body" id="popupContent"></div>
@@ -133,42 +142,261 @@
   <div id="tooltipContainer" class="tooltip-container">
     <div class="tooltip-content" id="tooltipContent"></div>
   </div>
-  
+  <!-- 搜索框 -->
+  <div id="searchContainer" style="position: fixed; top: 20px; right: 20px;">
+    <input type="text" id="searchInput" placeholder="输入地点名称">
+    <button onclick="searchLocation()">搜索</button>
+  </div>
+  <div id="r-result" style="position: fixed; right: 20px; top: 50px; "></div>
+
 
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/jquery"></script>
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
   <!-- Uncomment this line if you want to dataTool extension -->
-  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js"></script>
- 
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/dataTool.min.js">
+  </script>
+
   <!-- Uncomment this line if you want to use gl extension -->
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-gl@2/dist/echarts-gl.min.js"></script>
- 
+
   <!-- Uncomment this line if you want to echarts-stat extension -->
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts-stat@latest/dist/ecStat.min.js"></script>
- 
+
   <!-- Uncomment this line if you want to use map -->
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/china.js"></script>
   <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@4.9.0/map/js/world.js"></script>
- 
+
   <!-- Uncomment these two lines if you want to use bmap extension -->
   <script type="text/javascript" src="https://api.map.baidu.com/api?v=3.0&ak=u5zwB2f7UWPNW3p5MdydA9nAeolKUxUN"></script>
-  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/bmap.min.js"></script>
- 
+  <script type="text/javascript" src="https://fastly.jsdelivr.net/npm/echarts@5.4.2/dist/extension/bmap.min.js">
+  </script>
+
 
   <script type="text/javascript">
-     var colorList = document.getElementById('listItems');
-  var bubbleColors = [
-    { type: '西餐', color: 'red' },
-    { type: '日料', color: 'blue' },
-    { type: '中餐', color: 'yellow' }
-  ];
+    if (!window.name) {
+      var str = Math.random().toString(36).substr(2);
+      //随机字符串         
+      window.location.href += '?S=' + str;
+      //兼容微信浏览器刷新
+      window.name = 'isreload';
+    }
 
-  bubbleColors.forEach(function(item) {
-    var li = document.createElement('li');
-    li.textContent = item.type;
-    li.style.color = item.color;
-    colorList.appendChild(li);
-  });
+    var colorList = document.getElementById('listItems');
+
+    //定义品类
+    var bubbleColorMap = new Map();
+    bubbleColorMap.set('西餐', 'blue');
+    bubbleColorMap.set('日料', 'green');
+    bubbleColorMap.set('火锅', 'red');
+    bubbleColorMap.set('地方菜', 'black');
+    bubbleColorMap.set('东南亚菜', '#2ECC71');
+
+
+    // 生成随机位置的气泡数据
+    var bubbleData = [{
+        name: 'Orio',
+        value: [116.459591, 39.969501],
+        details: {
+          type: '西餐',
+          cuisine: '西餐',
+          name_detail: 'Orio',
+          address: '三元桥',
+          name: 'Orio',
+          price: 120,
+          link: 'https://zaihui.feishu.cn/docx/Wkrnd0e9LowsObxBACtcxi5bndh',
+          person: '韩利飞',
+          count: '1'
+        }
+      },
+      {
+        name: '闲·barblu',
+        value: [116.463525, 39.969074],
+        details: {
+          type: '西餐',
+          cuisine: '西餐',
+          name_detail: '闲·庭 Barblu Garden(三元桥凤凰新天地店)',
+          address: '三元桥',
+          name: '闲·barblu',
+          price: 165,
+          link: 'https://zaihui.feishu.cn/docx/ZrJud3lO4o2zUWxq52QcDY1tnte',
+          person: '韩利飞',
+          count: '2'
+        }
+      },
+      {
+        name: '闲·barblu',
+        value: [116.420499, 39.954716],
+        details: {
+          type: '西餐',
+          cuisine: '西餐',
+          name_detail: '闲·胡同 Baiblu Garden(三元桥凤凰新天地店)',
+          address: '雍和宫/地坛',
+          name: '闲·barblu',
+          price: 135,
+          link: 'https://zaihui.feishu.cn/docx/ZrJud3lO4o2zUWxq52QcDY1tnte',
+          person: '韩利飞',
+          count: '2'
+        }
+      },
+      {
+        name: '大龙燚',
+        value: [116.520105, 39.938786],
+        details: {
+          type: '火锅',
+          cuisine: '四川火锅',
+          name_detail: '大龙燚火锅(北京朝阳店)',
+          address: '青年路',
+          name: '闲·barblu',
+          price: 118,
+          link: 'https://zaihui.feishu.cn/docx/B6esdy9k5oMs5uxkeGPcjgJFnwd',
+          person: '韩利飞',
+          count: '1'
+        }
+      },
+      {
+        name: '河沿肉饼',
+        value: [116.414938, 39.922533],
+        details: {
+          type: '地方菜',
+          cuisine: '京菜',
+          name_detail: '河沿肉饼Beijing Pie(锡拉胡同店)',
+          address: '王府井/东单',
+          name: '河沿肉饼',
+          price: 65,
+          link: 'https://zaihui.feishu.cn/docx/RRi7dYMuEo5ie2xstrgc67Scncd',
+          person: '韩利飞',
+          count: '3'
+        }
+      },
+      {
+        name: '河沿肉饼',
+        value: [116.401298, 39.904875],
+        details: {
+          type: '地方菜',
+          cuisine: '京菜',
+          name_detail: '河沿肉饼Beijing Pie(前门店)',
+          address: '前门/大栅栏',
+          name: '河沿肉饼',
+          price: 54,
+          link: 'https://zaihui.feishu.cn/docx/RRi7dYMuEo5ie2xstrgc67Scncd',
+          person: '韩利飞',
+          count: '3'
+        }
+      },
+      {
+        name: '河沿肉饼',
+        value: [116.41031, 39.921386],
+        details: {
+          type: '地方菜',
+          cuisine: '京菜',
+          name_detail: '河沿肉饼Beijing Pie(东华门店)',
+          address: '王府井/东单',
+          name: '河沿肉饼',
+          price: 59,
+          link: 'https://zaihui.feishu.cn/docx/RRi7dYMuEo5ie2xstrgc67Scncd',
+          person: '韩利飞',
+          count: '3'
+        }
+      },
+      {
+        name: '正泰--泰餐',
+        value: [116.439082, 39.945864],
+        details: {
+          type: '东南亚菜',
+          cuisine: '泰餐',
+          name_detail: '正泰餐厅AmazingThai来福士店',
+          address: '东直门',
+          name: '正泰餐厅',
+          price: 131,
+          link: '',
+          person: '姬生阳',
+          count: '6'
+        }
+      },
+      {
+        name: '正泰--泰餐',
+        value: [116.4689, 39.899489],
+        details: {
+          type: '东南亚菜',
+          cuisine: '泰餐',
+          name_detail: '正泰餐厅AmazingThai(双井店)',
+          address: '双井',
+          name: '正泰餐厅',
+          price: 131,
+          link: '',
+          person: '姬生阳',
+          count: '6'
+        }
+      },
+      {
+        name: '正泰--泰餐',
+        value: [116.48078, 39.955266],
+        details: {
+          type: '东南亚菜',
+          cuisine: '泰餐',
+          name_detail: '正泰泰园ThaiGarden(蓝色港湾店)',
+          address: '蓝色港湾',
+          name: '正泰泰园',
+          price: 135,
+          link: '',
+          person: '姬生阳',
+          count: '6'
+        }
+      },
+      {
+        name: '正泰--泰餐',
+        value: [116.379516, 39.915623],
+        details: {
+          type: '东南亚菜',
+          cuisine: '泰餐',
+          name_detail: '正泰泰园ThaiGarden(君太店）',
+          address: '西单',
+          name: '正泰泰园',
+          price: 121,
+          link: '',
+          person: '姬生阳',
+          count: '6'
+        }
+      },
+      {
+        name: '正泰--泰餐',
+        value: [116.454445, 39.977609],
+        details: {
+          type: '东南亚菜',
+          cuisine: '泰餐',
+          name_detail: '正泰餐厅AmazingThai(太阳宫凯德mall店)',
+          address: '太阳宫',
+          name: '正泰餐厅',
+          price: 122,
+          link: '',
+          person: '姬生阳',
+          count: '6'
+        }
+      },
+      {
+        name: '正泰--泰餐',
+        value: [116.402429, 40.005627],
+        details: {
+          type: '东南亚菜',
+          cuisine: '泰餐',
+          name_detail: '正泰餐厅AmazingThai(新奥购物中心店)',
+          address: '鸟巢/水立方',
+          name: '正泰餐厅',
+          price: 119,
+          link: '',
+          person: '姬生阳',
+          count: '6'
+        }
+      }
+    ];
+
+    bubbleColorMap.forEach(function (value, key, map) {
+      var li = document.createElement('li');
+      li.textContent = key;
+      li.style.color = value;
+      colorList.appendChild(li);
+    });
+
     var dom = document.getElementById('container');
     var myChart = echarts.init(dom, null, {
       renderer: 'canvas',
@@ -178,44 +406,24 @@
     var ROOT_PATH = 'https://echarts.apache.org/examples';
     var option;
 
-    // 生成随机位置的气泡数据
-    var bubbleData = [
-  {
-    name: '气泡1',
-    value: [116.4, 39.9, 10],
-    details: { type: '西餐', name: 'orio', address: '三元桥',title:'1' },
-    itemStyle: { color: 'red' }  // 修改气泡的颜色
-  },
-  {
-    name: '气泡2',
-    value: [116.5, 39.8, 20],
-    details: { type: '中餐', name: '麻辣烫', address: '朝阳区',title:'2'  },
-    itemStyle: { color: 'yellow' }  // 修改气泡的颜色
-  },
-  {
-    name: '气泡3',
-    value: [116.6, 39.7, 30],
-    details: { type: '日料', name: '寿司', address: '海淀区',title:'3'  },
-    itemStyle: { color: 'blue' }  // 修改气泡的颜色
-  }
-];
+    var initBubbleData = function () {
+      bubbleData.forEach(function (item) {
+        _color = bubbleColorMap.get(item.details.type)
+        item.itemStyle = {
+          'color': _color
+        }
+      });
+      return bubbleData;
+    };
 
     myChart.setOption(
       (option = {
         bmap: {
           center: [116.46, 39.92],
-          zoom: 10,
+          zoom: 12,
           roam: true,
         },
-        // tooltip: {
-        //   trigger: 'item',
-        //   formatter: function (params) {
-        //     var details = params.data.details;
-        //     return details ? JSON.stringify(details) : '';
-        //   }
-        // },
-        series: [
-          {
+        series: [{
             type: 'lines',
             coordinateSystem: 'bmap',
             polyline: true,
@@ -231,7 +439,7 @@
           {
             type: 'effectScatter',
             coordinateSystem: 'bmap',
-            data: bubbleData,
+            data: initBubbleData(),
             symbolSize: function (val) {
               return 20; // 气泡大小关联到第三个维度的值
             },
@@ -263,7 +471,7 @@
     }
 
     // 弹窗相关
-    
+
     myChart.on('click', function (params) {
       var details = params.data.details;
       if (details) {
@@ -274,60 +482,94 @@
     window.addEventListener('resize', myChart.resize);
 
     var popupContainer = document.getElementById('popupContainer');
-  var popupTitle = document.getElementById('popupTitle');
-  var popupContent = document.getElementById('popupContent');
+    var popupTitle = document.getElementById('popupTitle');
+    var popupContent = document.getElementById('popupContent');
 
-  function showPopup(details) {
-    popupTitle.innerText = details.title;
-    popupContent.innerHTML = `
+    function showPopup(details) {
+      popupTitle.innerText = details.name;
+      popupTitle.style.color = bubbleColorMap.get(details.type);
+      let link = details.link ? details.link : '';
+      let a = link ? `<a href='` + link + `'>` + link + `</a>` : `待补充`;
+      popupContent.innerHTML = `
       <div>
-        <div>Type: ${details.type}</div>
-        <div>Name: ${details.name}</div>
-        <div>Address: ${details.address}</div>
+        <div>品类: ${details.type}</div>
+        <div>门店名: ${details.name_detail}</div>
+        <div>门店数量: ${details.count}</div>
+        <div>人均: ${details.price}</div>
+        <div>商圈: ${details.address}</div>
+        <div>销售: ${details.person}</div>
+        <div>案例详情：${a}</div>
       </div>
     `;
-    popupContainer.style.display = 'block';
-  }
-
-  function closePopup() {
-    popupContainer.style.display = 'none';
-  }
-
-
-
-
-  var tooltipContainer = document.getElementById('tooltipContainer');
-  var tooltipContent = document.getElementById('tooltipContent');
-
-  myChart.on('mouseover', function (params) {
-    var details = params.data.details;
-    if (details) {
-      showTooltip(params.event.event, details);
+      popupContainer.style.display = 'block';
     }
-  });
 
-  myChart.on('mouseout', function () {
-    hideTooltip();
-  });
+    function closePopup() {
+      popupContainer.style.display = 'none';
+    }
 
-  function showTooltip(event, details) {
-    tooltipContent.innerHTML = '';
-    var content = document.createElement('ul');
-    content.innerHTML = `
-      <li>Type: ${details.type}</li>
-      <li>Name: ${details.name}</li>
-      <li>Address: ${details.address}</li>
+
+
+
+    var tooltipContainer = document.getElementById('tooltipContainer');
+    var tooltipContent = document.getElementById('tooltipContent');
+
+    myChart.on('mouseover', function (params) {
+      var details = params.data.details;
+      if (details) {
+        showTooltip(params.event.event, details);
+      }
+    });
+
+    myChart.on('mouseout', function () {
+      hideTooltip();
+    });
+
+    function showTooltip(event, details) {
+      tooltipContent.innerHTML = '';
+      var content = document.createElement('ul');
+      content.innerHTML = `
+      <span>人均: ${details.price}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span>品牌名: ${details.name}</span></br></br>
+      <span>菜系: ${details.type}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <span>商圈: ${details.address}</span>
     `;
-    tooltipContent.appendChild(content);
+      tooltipContent.appendChild(content);
 
-    tooltipContainer.style.left = event.offsetX + 'px';
-    tooltipContainer.style.top = event.offsetY + 'px';
-    tooltipContainer.style.display = 'block';
-  }
+      tooltipContainer.style.left = event.offsetX + 'px';
+      tooltipContainer.style.top = event.offsetY + 'px';
+      tooltipContainer.style.display = 'block';
+    }
 
-  function hideTooltip() {
-    tooltipContainer.style.display = 'none';
-  }
+    function hideTooltip() {
+      tooltipContainer.style.display = 'none';
+    }
+
+    // 生成随机颜色
+    function getRandomColor() {
+      var letters = '0123456789ABCDEF';
+      var color = '#';
+      for (var i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+      }
+      return color;
+    }
+
+    // 在搜索回调函数中处理搜索结果
+    function searchLocation() {
+      var keyword = document.getElementById('searchInput').value;
+
+      let map = myChart.getModel().getComponent('bmap').getBMap()
+      map.centerAndZoom(new BMap.Point(116.404, 39.915), 11);
+      var local = new BMap.LocalSearch(map, {
+        renderOptions: {
+          map: map,
+          panel: "r-result"
+        }
+      });
+      local.search(keyword);
+    }
   </script>
 </body>
+
 </html>
